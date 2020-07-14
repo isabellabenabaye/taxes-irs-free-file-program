@@ -19,7 +19,7 @@ online_eligible_filers_2018 <- tribble(
 ) %>%
   mutate(pct = prop.table(count))
 
-# From the IRS Data Book 2019, published June 2020:
+# From the IRS Data Book 2019, published June 2020 (https://www.irs.gov/pub/irs-pdf/p55b.pdf):
 # online filers: 57,303,192 (includes those not eligible for IRS Free File program)
 # used IRS Free File program: 2,811,883
 
@@ -77,10 +77,14 @@ online_filers <- online_eligible_filers_2018 %>%
   scale_y_continuous(labels = scales::label_number(suffix = "M"), expand = expansion(0,0)) + ## add "M" to indicate counts are in millions
   coord_flip()
 
+# Plot title
 t1 <- ggplot() +
   labs(title = "If you make <b>$69,000</b> or less a year, you can file your federal taxes<br>online <b>for free</b> through the <b><span style = 'color:#FF9F1C;'>IRS's Free File Program</span></b>.") +
   theme(axis.line = element_blank(), plot.margin = margin(0,0,0,0), plot.title = element_markdown(size = 32))
 
+# sources:
+# ProPublica - https://www.propublica.org/article/turbotax-and-others-charged-at-least-14-million-americans-for-tax-prep-that-should-have-been-free-audit-finds, https://www.propublica.org/series/the-turbotax-trap
+# IRS - https://www.irs.gov/newsroom/irs-free-file-use-soars-taxpayers-still-have-time-to-do-their-taxes-for-free
 t2 <- ggplot() +
   labs(title = "<b><span style = 'color:#304154;'>ProPublica</span></b> reports that the tax prep industry made around <b>$1 billion</b> in revenue <br>from people who were eligible to file for free.
        Although the IRS reported that as of <br>April 2020, the use of <b><span style = 'color:#FF9F1C;'>Free File</span></b> has increased by 16%, that is still only 2.9 million <br>of the currently more than 104 million eligible taxpayers.<br><br>
