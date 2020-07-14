@@ -19,7 +19,7 @@ eligible_filers_2018 <- tribble(
 ) %>%
   mutate(pct = prop.table(count))
 
-# From the IRS Data Book 2019, published June 2020 (https://www.irs.gov/pub/irs-pdf/p55b.pdf):
+# Additional info from the IRS Data Book 2019, published June 2020 (https://www.irs.gov/pub/irs-pdf/p55b.pdf):
 # online filers: 57,303,192 (includes those not eligible for IRS Free File program)
 # used IRS Free File program: 2,811,883
 
@@ -41,11 +41,11 @@ theme <- theme_update(text = element_text(family = "IBM Plex Sans", size = 13),
 
 
 # Plots ----
-# Of the 37 million online filers last year, only 37 million of them filed online
+# Of the 104 million taxpayers eligible for the Free File Program, only 37 million of them filed online
 eligible_taxpayers <- eligible_filers_2018 %>%
   group_by(file_type) %>%
   summarise(sum = sum(count)) %>%
-  summarise(file_type, sum, pct_file_type = prop.table(sum)) %>%
+  summarise(file_type, sum, pct_file_type = prop.table(sum)) %>% ## get percentages of the two groups
   mutate(label= 1) %>%
   ggplot(aes(label, sum,  fill = file_type)) +
   labs(title = "<b>Last year, only 37 million of the 104 million taxpayers eligible for the <span style = 'color:#FF9F1C;'>IRS's Free File<br>Program</span> filed <span style = 'color:#E71D36;'>online</span></b>",
