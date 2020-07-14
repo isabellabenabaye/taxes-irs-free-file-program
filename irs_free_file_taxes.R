@@ -10,7 +10,7 @@ loadfonts(device = "win", quiet = TRUE) ## to load
 # link to report: https://www.treasury.gov/tigta/auditreports/2020reports/202040009fr.pdf
 # total number of taxpayers eligible for free online filing using the IRS Free File program: 104 million (out of 154 million total taxpayers)
 # 34,508,312 non-Free File tax returns filed using the members’ software in Processing Year 2019/Tax Year 2018
-online_eligible_filers_2018 <- tribble(
+eligible_filers_2018 <- tribble(
   ~category, ~count, ~file_type, ~label,
   "other means of filing", 67, "other", 1,
   "irs free file program", 2.5, "online", 1,
@@ -42,7 +42,7 @@ theme <- theme_update(text = element_text(family = "IBM Plex Sans", size = 13),
 
 # Plots ----
 # Of the 37 million online filers last year, only 37 million of them filed online
-eligible_taxpayers <- online_eligible_filers_2018 %>%
+eligible_taxpayers <- eligible_filers_2018 %>%
   group_by(file_type) %>%
   summarise(sum = sum(count)) %>%
   summarise(file_type, sum, pct_file_type = prop.table(sum)) %>%
@@ -59,7 +59,8 @@ eligible_taxpayers <- online_eligible_filers_2018 %>%
   scale_y_continuous(labels = scales::label_number(suffix = "M"), expand = expansion(0,0)) +
   coord_flip()
 
-online_filers <- online_eligible_filers_2018 %>%
+# Breakdown of online filers - only 2.5 million used the Free File Program
+online_filers <- eligible_filers_2018 %>%
   filter(file_type == "online") %>% ## filter to only include online filers
   ggplot(aes(label,count,  fill = fct_reorder(category,count))) +
   labs(title = "<b>Of the 37 million eligible <span style = 'color:#E71D36;'>online</span> filers, 34.5 million filed through a <span style = 'color:#5e548e;'>commercial<br>website</span> and only 2.5 million filed through the <span style = 'color:#FF9F1C;'>Program</span></b>",
@@ -82,6 +83,7 @@ t1 <- ggplot() +
   labs(title = "If you make <b>$69,000</b> or less a year, you can file your federal taxes<br>online <b>for free</b> through the <b><span style = 'color:#FF9F1C;'>IRS's Free File Program</span></b>.") +
   theme(axis.line = element_blank(), plot.margin = margin(0,0,0,0), plot.title = element_markdown(size = 32))
 
+# 2nd text block
 # sources:
 # ProPublica - https://www.propublica.org/article/turbotax-and-others-charged-at-least-14-million-americans-for-tax-prep-that-should-have-been-free-audit-finds, https://www.propublica.org/series/the-turbotax-trap
 # IRS - https://www.irs.gov/newsroom/irs-free-file-use-soars-taxpayers-still-have-time-to-do-their-taxes-for-free
@@ -90,7 +92,7 @@ t2 <- ggplot() +
        Although the IRS reported that as of <br>April 2020, the use of <b><span style = 'color:#FF9F1C;'>Free File</span></b> has increased by 16%, that is still only 2.9 million <br>of the currently more than 104 million eligible taxpayers.<br><br>
        The efforts of the tax prep industry to deceive customers and lobby against free <br>and easy tax filing, in addition to the complexity and obscurity of the <b><span style = 'color:#FF9F1C;'>Free File <br>Program</span></b>, result in many taxpayers not utilizing the product.<br>
        <b>So spread the word and file for free at <span style = 'color:#FF9F1C;'>irs.gov/freefile</span></b>.",
-       caption = "Sources: U.S. Treasury Inspector General for Tax Administration, ProPublica, IRS") +
+       caption = "Sources: U.S. Treasury Inspector General for Tax Administration, ProPublica, IRS") + ## sources for entire infographic
   theme(plot.title = element_markdown(size = 26, lineheight = 1.5, color = "black"))
 
 # Combine plots + save the final plot
